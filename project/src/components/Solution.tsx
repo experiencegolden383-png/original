@@ -1,6 +1,10 @@
 import { RealTimeBedIcon, ColorCodedStatusIcons, AIPredicationsChart } from './illustrations/SolutionIllustrations';
+import { useScrollReveal } from '../hooks/useScrollReveal';
 
 export default function Solution() {
+  const { ref: titleRef, isVisible: titleVisible } = useScrollReveal();
+  const { ref: gridRef, isVisible: gridVisible } = useScrollReveal();
+
   const features = [
     {
       title: 'Real-Time Bed Status',
@@ -25,7 +29,14 @@ export default function Solution() {
   return (
     <section className="py-24 px-6 bg-white">
       <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-16">
+        <div
+          ref={titleRef}
+          className={`text-center mb-16 transition-all duration-700 ${
+            titleVisible
+              ? 'opacity-100 translate-y-0'
+              : 'opacity-0 translate-y-8'
+          }`}
+        >
           <h2 className="text-4xl md:text-5xl font-bold text-[#1F2937] mb-6">
             The Solution
           </h2>
@@ -34,13 +45,20 @@ export default function Solution() {
           </p>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-8">
+        <div
+          ref={gridRef}
+          className={`grid md:grid-cols-3 gap-8 transition-all duration-700 ${
+            gridVisible
+              ? 'opacity-100 translate-y-0'
+              : 'opacity-0 translate-y-8'
+          }`}
+        >
           {features.map((feature, index) => {
             const Illustration = feature.illustration;
             return (
               <div
                 key={index}
-                className="bg-white border border-[#E5E7EB] rounded-2xl p-8 hover:shadow-xl transition-all duration-300 hover:-translate-y-2 group overflow-hidden"
+                className="bg-white border border-[#E5E7EB] rounded-2xl p-8 hover:shadow-xl transition-all duration-300 hover:-translate-y-2 group overflow-hidden hover:scale-105"
               >
                 <div className="mb-6 h-40 flex items-center justify-center bg-[#F9FAFB] rounded-xl group-hover:bg-gradient-to-br group-hover:from-[#EFF6FF] group-hover:to-[#F0FDF4] transition-colors duration-300">
                   <Illustration />

@@ -1,11 +1,22 @@
 import { ArrowRight, Award } from 'lucide-react';
+import { useScrollReveal } from '../hooks/useScrollReveal';
 
 export default function OurStory() {
+  const { ref: imageRef, isVisible: imageVisible } = useScrollReveal();
+  const { ref: textRef, isVisible: textVisible } = useScrollReveal();
+
   return (
     <section id="about" className="py-24 px-6 bg-[#F9FAFB]">
       <div className="max-w-7xl mx-auto">
         <div className="grid md:grid-cols-2 gap-12 items-center">
-          <div className="relative">
+          <div
+            ref={imageRef}
+            className={`relative transition-all duration-700 ${
+              imageVisible
+                ? 'opacity-100 translate-x-0'
+                : 'opacity-0 -translate-x-8'
+            }`}
+          >
             <div className="absolute inset-0 bg-[#3B82F6] rounded-3xl transform rotate-3"></div>
             <div className="relative bg-white rounded-3xl p-8 shadow-xl border border-[#E5E7EB]">
               <div className="aspect-video bg-gradient-to-br from-[#3B82F6] to-[#10B981] rounded-2xl flex items-center justify-center">
@@ -32,7 +43,14 @@ export default function OurStory() {
             </div>
           </div>
 
-          <div>
+          <div
+            ref={textRef}
+            className={`transition-all duration-700 ${
+              textVisible
+                ? 'opacity-100 translate-x-0'
+                : 'opacity-0 translate-x-8'
+            }`}
+          >
             <h2 className="text-4xl md:text-5xl font-bold text-[#1F2937] mb-6">
               From Coolest Projects to Saving Lives
             </h2>

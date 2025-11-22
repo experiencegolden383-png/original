@@ -1,5 +1,11 @@
-import { Mail, Phone, MapPin, Send } from 'lucide-react';
+import { Mail, Phone, MapPin, Send, CheckCircle, AlertCircle } from 'lucide-react';
 import { useState } from 'react';
+import { createClient } from '@supabase/supabase-js';
+
+const supabase = createClient(
+  import.meta.env.VITE_SUPABASE_URL,
+  import.meta.env.VITE_SUPABASE_SUPABASE_ANON_KEY
+);
 
 export default function Contact() {
   const [formData, setFormData] = useState({
@@ -8,10 +14,29 @@ export default function Contact() {
     subject: '',
     message: '',
   });
+  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [message, setMessage] = useState('');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Form submitted:', formData);
+    setStatus('loading');
+
+    try {
+      const { error } = await supabase
+        .from('contact_submissions')
+        .insert([formData]);
+
+      if (error) throw error;
+
+      setStatus('success');
+      setMessage('Message sent successfully! We\'ll get back to you soon.');
+      setFormData({ name: '', email: '', subject: '', message: '' });
+      setTimeout(() => setStatus('idle'), 5000);
+    } catch (err) {
+      setStatus('error');
+      setMessage('Failed to send message. Please try again.');
+      console.error('Form submission error:', err);
+    }
   };
 
   return (
@@ -168,11 +193,26 @@ export default function Contact() {
 
               <button
                 type="submit"
-                className="w-full bg-[#3B82F6] text-white px-8 py-4 rounded-xl hover:bg-[#2563EB] transition-all duration-300 hover:shadow-xl hover:scale-105 flex items-center justify-center gap-2 font-medium text-lg"
+                disabled={status === 'loading'}
+                className="w-full bg-[#3B82F6] text-white px-8 py-4 rounded-xl hover:bg-[#2563EB] transition-all duration-300 hover:shadow-xl hover:scale-105 flex items-center justify-center gap-2 font-medium text-lg disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <Send size={20} />
-                Send Message
+                {status === 'loading' ? 'Sending...' : 'Send Message'}
               </button>
+
+              {status === 'success' && (
+                <div className="flex items-center gap-2 p-4 bg-[#F0FDF4] border border-[#10B981] rounded-xl text-[#10B981]">
+                  <CheckCircle size={20} />
+                  <span>{message}</span>
+                </div>
+              )}
+
+              {status === 'error' && (
+                <div className="flex items-center gap-2 p-4 bg-[#FEF2F2] border border-[#EF4444] rounded-xl text-[#EF4444]">
+                  <AlertCircle size={20} />
+                  <span>{message}</span>
+                </div>
+              )}
             </form>
           </div>
         </div>

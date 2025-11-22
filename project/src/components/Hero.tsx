@@ -1,15 +1,27 @@
 import { ArrowDown, Play } from 'lucide-react';
 import { EmergencyResponseIllustration } from './illustrations/HeroIllustrations';
+import { useParallax } from '../hooks/useParallax';
 
 export default function Hero() {
+  const { ref, offset } = useParallax(0.3);
+
   return (
     <section
       id="home"
-      className="min-h-screen flex items-center justify-center bg-gradient-to-b from-white to-[#F9FAFB] px-6"
+      className="relative min-h-screen flex items-center justify-center bg-gradient-to-b from-white to-[#F9FAFB] px-6 overflow-hidden"
+      ref={ref}
     >
-      <div className="max-w-4xl mx-auto text-center">
+      <div className="absolute inset-0 opacity-5">
+        <div className="absolute top-20 right-10 w-72 h-72 bg-[#3B82F6] rounded-full blur-3xl"></div>
+        <div className="absolute bottom-20 left-10 w-72 h-72 bg-[#10B981] rounded-full blur-3xl"></div>
+      </div>
+
+      <div className="max-w-4xl mx-auto text-center relative z-10">
         <div className="mb-12">
-          <div className="inline-block mb-8 w-72 h-72 animate-float">
+          <div
+            className="inline-block mb-8 w-72 h-72 animate-float"
+            style={{ transform: `translateY(${offset}px)` }}
+          >
             <EmergencyResponseIllustration />
           </div>
         </div>

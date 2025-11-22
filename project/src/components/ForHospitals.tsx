@@ -1,6 +1,10 @@
 import { CheckCircle, Download, Calendar } from 'lucide-react';
+import { useScrollReveal } from '../hooks/useScrollReveal';
 
 export default function ForHospitals() {
+  const { ref: titleRef, isVisible: titleVisible } = useScrollReveal();
+  const { ref: contentRef, isVisible: contentVisible } = useScrollReveal();
+
   const benefits = [
     'Update bed status in real-time',
     'Reduce emergency chaos by 40%',
@@ -13,7 +17,14 @@ export default function ForHospitals() {
   return (
     <section id="hospitals" className="py-24 px-6 bg-white">
       <div className="max-w-5xl mx-auto">
-        <div className="text-center mb-16">
+        <div
+          ref={titleRef}
+          className={`text-center mb-16 transition-all duration-700 ${
+            titleVisible
+              ? 'opacity-100 translate-y-0'
+              : 'opacity-0 translate-y-8'
+          }`}
+        >
           <h2 className="text-4xl md:text-5xl font-bold text-[#1F2937] mb-6">
             Partner with JEEVA
           </h2>
@@ -24,7 +35,14 @@ export default function ForHospitals() {
           </p>
         </div>
 
-        <div className="bg-gradient-to-br from-[#F0F9FF] to-[#F0FDF4] rounded-3xl p-12 mb-12 border border-[#E5E7EB]">
+        <div
+          ref={contentRef}
+          className={`bg-gradient-to-br from-[#F0F9FF] to-[#F0FDF4] rounded-3xl p-12 mb-12 border border-[#E5E7EB] transition-all duration-700 ${
+            contentVisible
+              ? 'opacity-100 translate-y-0'
+              : 'opacity-0 translate-y-8'
+          }`}
+        >
           <div className="grid md:grid-cols-2 gap-8 mb-12">
             {benefits.map((benefit, index) => (
               <div key={index} className="flex items-start gap-3">

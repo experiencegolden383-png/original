@@ -1,6 +1,10 @@
 import { Linkedin, Github, Mail } from 'lucide-react';
+import { useScrollReveal } from '../hooks/useScrollReveal';
 
 export default function Team() {
+  const { ref: titleRef, isVisible: titleVisible } = useScrollReveal();
+  const { ref: gridRef, isVisible: gridVisible } = useScrollReveal();
+
   const teamMembers = [
     {
       name: 'Ayush Kumar',
@@ -49,7 +53,14 @@ export default function Team() {
   return (
     <section id="team" className="py-24 px-6 bg-white">
       <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-16">
+        <div
+          ref={titleRef}
+          className={`text-center mb-16 transition-all duration-700 ${
+            titleVisible
+              ? 'opacity-100 translate-y-0'
+              : 'opacity-0 translate-y-8'
+          }`}
+        >
           <h2 className="text-4xl md:text-5xl font-bold text-[#1F2937] mb-6">
             Meet the Team
           </h2>
@@ -58,7 +69,14 @@ export default function Team() {
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div
+          ref={gridRef}
+          className={`grid md:grid-cols-2 lg:grid-cols-3 gap-8 transition-all duration-700 ${
+            gridVisible
+              ? 'opacity-100 translate-y-0'
+              : 'opacity-0 translate-y-8'
+          }`}
+        >
           {teamMembers.map((member, index) => (
             <div
               key={index}

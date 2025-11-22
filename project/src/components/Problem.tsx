@@ -1,10 +1,22 @@
 import { ShortageProgressRing, HospitalJourneyMap, EmotionalJourneyChart } from './illustrations/ProblemIllustrations';
+import { useScrollReveal } from '../hooks/useScrollReveal';
 
 export default function Problem() {
+  const { ref: headerRef, isVisible: headerVisible } = useScrollReveal();
+  const { ref: contentRef, isVisible: contentVisible } = useScrollReveal();
+  const { ref: chartsRef, isVisible: chartsVisible } = useScrollReveal();
+
   return (
     <section className="py-24 px-6 bg-[#F3F4F6]">
       <div className="max-w-6xl mx-auto">
-        <div className="text-center mb-16">
+        <div
+          ref={headerRef}
+          className={`text-center mb-16 transition-all duration-700 ${
+            headerVisible
+              ? 'opacity-100 translate-y-0'
+              : 'opacity-0 translate-y-8'
+          }`}
+        >
           <div className="w-1 h-16 bg-[#EF4444] mx-auto mb-8"></div>
 
           <h2 className="text-4xl md:text-5xl font-bold text-[#1F2937] mb-12 leading-tight">
@@ -12,7 +24,14 @@ export default function Problem() {
           </h2>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-12 mb-16">
+        <div
+          ref={contentRef}
+          className={`grid md:grid-cols-2 gap-12 mb-16 transition-all duration-700 ${
+            contentVisible
+              ? 'opacity-100 translate-y-0'
+              : 'opacity-0 translate-y-8'
+          }`}
+        >
           <div className="flex items-center justify-center">
             <div className="w-full max-w-sm h-80">
               <ShortageProgressRing />
@@ -44,7 +63,14 @@ export default function Problem() {
           </div>
         </div>
 
-        <div className="mb-12">
+        <div
+          ref={chartsRef}
+          className={`mb-12 transition-all duration-700 ${
+            chartsVisible
+              ? 'opacity-100 translate-y-0'
+              : 'opacity-0 translate-y-8'
+          }`}
+        >
           <h3 className="text-2xl font-bold text-[#1F2937] text-center mb-8">Current Hospital Journey</h3>
           <div className="w-full h-32">
             <HospitalJourneyMap />

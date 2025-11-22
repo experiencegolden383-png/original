@@ -1,6 +1,9 @@
 import { Calendar, MapPin, Users } from 'lucide-react';
+import { useScrollReveal } from '../hooks/useScrollReveal';
 
 export default function Events() {
+  const { ref: titleRef, isVisible: titleVisible } = useScrollReveal();
+
   const events = [
     {
       year: '2025',
@@ -51,7 +54,14 @@ export default function Events() {
   return (
     <section id="events" className="py-24 px-6 bg-[#F9FAFB]">
       <div className="max-w-5xl mx-auto">
-        <div className="text-center mb-16">
+        <div
+          ref={titleRef}
+          className={`text-center mb-16 transition-all duration-700 ${
+            titleVisible
+              ? 'opacity-100 translate-y-0'
+              : 'opacity-0 translate-y-8'
+          }`}
+        >
           <h2 className="text-4xl md:text-5xl font-bold text-[#1F2937] mb-6">
             Our Journey
           </h2>
